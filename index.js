@@ -41,7 +41,7 @@ http.createServer((request, response) => {
                 audio.kill();
             }
             audio = player.play('guangrong.mp3', (err) => {
-                if (err) {
+                if (err && !err.killed) {
                     throw err;
                 }
             });
