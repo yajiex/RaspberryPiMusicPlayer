@@ -1,6 +1,5 @@
 const http = require('http');
 const fs = require('fs');
-const qs = require('querystring');
 const player = require('./player');
 
 http.createServer((request, response) => {
@@ -31,12 +30,17 @@ http.createServer((request, response) => {
         });
 
         request.on('end', () => {
-            const post = qs.parse(body);
-            const musicName = post.name;
-            console.log(musicName);
+            const post = JSON.parse(body);
+            if (post.action === 'play') {
+                const musicName = post.musicName;
+                console.log(musicName);
 
-            player.stop();
-            player.play(musicName);
+                player.stop();
+                player.play(musicName);
+            } else if (post.action === 'stop') {
+                player.stop();
+            }
+
 
             response.statusCode = 200;
             response.end();
